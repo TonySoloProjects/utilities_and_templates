@@ -26,17 +26,23 @@ class Inspector:
         """call climb_dir if no function is specified"""
         self.climb_dir(*args, *kwargs)
 
-    def climb_dir(self, obj, drilldown='__class__'):
+    def climb_dir(self, obj, drilldown='__class__', max_output=None, ignore_starting_with=None):
         """Print the dir results for obj, recursively explore attributes of the attribute specified as drilldown.
+
         Parameters
         ----------
         obj :
-            obj to explore recursively with dir
+            obj to explore with dir
         drilldown : str
             name of dir attribute you wish to recursively explore.
+        max_output : int
+            Max number of characters of an attribute to print.
+        ignore_starting_with: str
+            Filter to ignore attributes that start with a character string.
+            Typical values include "_" or "__" to suppress magic methods
         Notes
-        -------"""
-
+        -------
+        """
         # Call dir & store the object name and class name
         obj_dir = dir(obj)
         obj_class_name = getattr(obj, '__class__').__name__
@@ -60,18 +66,25 @@ class Inspector:
         print(f"The object id is: {id(obj)}")
         print(f"{'-'*80}")
 
+        # Filter out unwanted variables by string pattern start
+        if ignore_starting_with:
+            obj_dir = [i for i in obj_dir if not i.startswith(ignore_starting_with)]
+
         # Display dir attribute names and the attributes values where possible.
         for item in obj_dir:
-            if item != "__abstractmethods__":
-                print(f"{item:20s} = {getattr(obj, item)}")
-            else:
+            if item == "__abstractmethods__":
                 print(f"{item:20s} = ** Not evaluated, calls to __abstractmethods__ can result in exceptions **")
+            else:
+                attr = getattr(obj, item)
+                if max_output:
+                    attr = f"{attr[:max_output]} + ... (Total length of result= {len(attr)})"
+                print(f"{item:20s} = {attr}")
+
         print(f"{'-' * 80}")
 
         # Evaluate the object specified by the drilldown string through recursion
         # getattr(obj, drilldown) results vary based on attribute of interest
         # This inspector is designed to handle getattr results that are None, single item, a list, or tuple
-
 
         if drilldown is None: return    # End recursion if there is no drilldown
 
@@ -138,7 +151,7 @@ class Inspector:
         """Test the climbDir function"""
         # not sure this block is going to be helpful in the future, but i learned a bit getting it this far
         # x = C()
-        # self.climb_dir(Super, '__class__')
+        self.climb_dir(Super, '__class__')
         # self.climb_dir(Super(), '__class__')
         # self.climb_dir(Sub, '__bases__')
         # self.climb_dir(Sub(), '__bases__')
