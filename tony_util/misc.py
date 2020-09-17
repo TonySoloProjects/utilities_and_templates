@@ -8,12 +8,14 @@ import sys
 
 def display_python_version():
     """Display python version and related info."""
+
     print(f"Python version: {sys.version}")
     print(f"Version info: {sys.version_info}")
 
 
 def print_header(str, char='*'):
     """Print a header to help separate print output.
+
     Parameters
     ----------
     str:
@@ -81,7 +83,9 @@ def stack_info(stack_print=True, short_filename=True):
     return filenames, linenums, function_names, statements
 
 def my_calling_statement(stack_index=-3):
-    """Inspect the call stack to see what statement was issued that resulted in this function being called.
+    """Inspect the call stack to see what statement was issued
+        that resulted in this function being called.
+
     Parameters
     ----------
     stack_index : int
@@ -93,14 +97,15 @@ def my_calling_statement(stack_index=-3):
     Notes
     -------
     You will likely want stack_index -2 or -3 to see your line of code of interest
-    See stack_info for details"""
-
+    See stack_info for details
+    """
     filename, linenum, function_name, statement = traceback.extract_stack()[stack_index]
     return statement
 
 
 def function_arguments(func_call):
-    """Find the arguments of a string representation of a function call
+    """Find the arguments of a string representation of a function call.
+
     Parameters
     ----------
     func_call : str
@@ -108,7 +113,8 @@ def function_arguments(func_call):
     Returns
     -------
     arguments : str
-        text between the parentheses in the function call as a single string"""
+        text between the parentheses in the function call as a single string
+    """
     first = func_call.find('(')
     last = func_call.rfind(')')
     return func_call[first+1:last]
