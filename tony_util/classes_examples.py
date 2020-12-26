@@ -12,7 +12,6 @@ class J(G, H, D): pass
 
 class Super:
     class_level_variable = "Who can see me?"
-
     def hello(self):
         self.data = 'More'
 

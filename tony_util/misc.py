@@ -8,7 +8,6 @@ import sys
 
 def display_python_version():
     """Display python version and related info."""
-
     print(f"Python version: {sys.version}")
     print(f"Version info: {sys.version_info}")
 
@@ -117,7 +116,34 @@ def function_arguments(func_call):
     """
     first = func_call.find('(')
     last = func_call.rfind(')')
-    return func_call[first+1:last]
+    str_args = func_call[first+1:last]
+    # remove all whitespace and separate on comma
+    str_args = str_args.replace(" ", "")
+    str_args = str_args.split(',')
+    # print(str_args)
+    return str_args
+
+
+def get_max_char(x, max_char=500):
+    """Trim a string to a maximum number of characters to avoid printing excessive text.
+
+    Parameters
+    ----------
+    x : str
+        string that will be potentially trimmed
+    max_char : int
+        Maximum number of characters to print
+    Returns
+    -------
+    y : str
+        original string if len(x) < max_char or truncated string
+    """
+    x_len = len(x)
+    y = x[:max_char]
+    if x_len > max_char:
+        y = f"{y} ... <1st {max_char} shown, {x_len-max_char} suppressed>"
+    return y
+
 
 def func1(arg1='mytext1'):
     func2('Simple String Argument')
@@ -130,6 +156,43 @@ def func2(arg2='mytext1'):
     z = function_arguments(y)
     print(z)
 
+def print_all(*args, output_mode='!s'):
+    """Diagnostic to output a list of variables and their values each on their own line.
+     This helps to make debuging print statements faster to type.
+
+    Parameters
+    ----------
+    *args :
+        Arguments you want diagnostic information for
+    output_mode : str
+        Selects whether the __str__ or __repr__ function will be invoke in string conversion.
+        Can be either '!r' for repr or '!s' for str
+    Returns
+    -------
+    """
+    # get variable names from the stack call
+    mcs = my_calling_statement()
+    fa = function_arguments(mcs)
+    # Always print the variable names with !s, but use the output_mode to for variable content
+    for i, j in zip(fa, args):
+        if output_mode == '!s':
+            print('--- {!s} ---\n{!s}'.format(i, j))
+        elif output_mode == '!r':
+            print('--- {!s} ---\n{!r}'.format(i, j))
+
+
 if __name__ == '__main__':
     """Diagnostic of utilities in this module"""
     func1()
+
+    print(get_max_char('~' * 50, 100))
+    print(get_max_char('~' * 125, 100))
+
+    a = "test"
+    b = 10
+    c = list([1, 2, 3])
+
+    print_all(a, b, c)
+
+    print_all(c, b, a, output_mode='!r')
+
