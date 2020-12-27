@@ -111,6 +111,7 @@ class SingletonLogger:
             warnings.warn("\nAttempt to re-create a logger with the same name was blocked."
                           "\nConsider modifying the logger named: *{name}* rather than re-creating it "
                           "\nso that these modifications will be applied to all references of the logger.")
+            return
 
         # create path if it does not exist yet
         if os.path.isfile(path):
@@ -120,6 +121,7 @@ class SingletonLogger:
 
         file_name = f'{path}/{name}.log'
 
+        # create logger, handlers, and apply filters
         logger = logging.getLogger(name)
         logger.setLevel(logging.DEBUG)
 
