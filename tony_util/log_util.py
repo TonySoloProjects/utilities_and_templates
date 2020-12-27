@@ -26,6 +26,7 @@ CRITICAL    50      A serious error,
 import logging
 import sys
 import os
+import warnings
 
 # todo - double check new filters
 
@@ -105,6 +106,12 @@ class SingletonLogger:
         file_level: int
             logging level for output file.
         """
+
+        if name in SingletonLogger.loggers:
+            warnings.warn("\nAttempt to re-create a logger with the same name was blocked."
+                          "\nConsider modifying the logger named: *{name}* rather than re-creating it "
+                          "\nso that these modifications will be applied to all references of the logger.")
+
         # create path if it does not exist yet
         if os.path.isfile(path):
             raise FileExistsError(f'Attempt to create a directory that is already a regular file:\n {path}')
@@ -137,6 +144,8 @@ if __name__ == "__main__":
 
     log1 = SingletonLogger.get_logger()
     log2 = SingletonLogger.get_logger('bob')
+    SingletonLogger.create_logger('bob')  # should raise warning
+
     log3 = SingletonLogger.get_logger('alice')
     print(SingletonLogger.loggers)
 
