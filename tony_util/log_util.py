@@ -27,8 +27,9 @@ import logging
 import sys
 import os
 import warnings
+import datetime
+import numpy as np
 
-# todo - double check new filters
 
 class FilterOutWarningsErrors(logging.Filter):
     """Filter out logging.WARNING or greater messages.
@@ -51,6 +52,7 @@ class SingletonLogger:
         3) The file name of the log file is: "<path>/<name>.log"
         """
     loggers = {}
+    np.set_printoptions(linewidth=200)
 
     @classmethod
     def get_logger(cls,
@@ -82,6 +84,9 @@ class SingletonLogger:
             """
         if name not in SingletonLogger.loggers:
             SingletonLogger.create_logger(name, path, stdout_level, file_level)
+            log = SingletonLogger.loggers[name]
+            log.info(f'Logger created at: {datetime.datetime.now()}')
+
         return SingletonLogger.loggers[name]
 
     @classmethod
@@ -105,6 +110,12 @@ class SingletonLogger:
 
         file_level: int
             logging level for output file.
+
+        Returns
+        -------
+        logger : logging
+            Application wide logger named 'name'
+
         """
 
         if name in SingletonLogger.loggers:
@@ -124,6 +135,7 @@ class SingletonLogger:
         # create logger, handlers, and apply filters
         logger = logging.getLogger(name)
         logger.setLevel(logging.DEBUG)
+        # logger.setLevel(logging.INFO)
 
         fh = logging.FileHandler(file_name)
         fh.setLevel(file_level)
@@ -140,13 +152,14 @@ class SingletonLogger:
         logger.addHandler(sh_out)
 
         SingletonLogger.loggers[name] = logger
+        return logger
 
 
 if __name__ == "__main__":
 
     log1 = SingletonLogger.get_logger()
     log2 = SingletonLogger.get_logger('bob')
-    SingletonLogger.create_logger('bob')  # should raise warning
+    # SingletonLogger.create_logger('bob')  # should raise warning
 
     log3 = SingletonLogger.get_logger('alice')
     print(SingletonLogger.loggers)
