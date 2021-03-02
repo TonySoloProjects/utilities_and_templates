@@ -180,6 +180,14 @@ def print_all(*args, output_mode='!s'):
         elif output_mode == '!r':
             print('--- {!s} ---\n{!r}'.format(i, j))
 
+# Based on: https://stackoverflow.com/questions/4664850/how-to-find-all-occurrences-of-a-substring
+
+def findall(p, s):
+    """Yields all the positions of the pattern p in the string s."""
+    i = s.find(p)
+    while i != -1:
+        yield i
+        i = s.find(p, i+1)
 
 if __name__ == '__main__':
     """Diagnostic of utilities in this module"""

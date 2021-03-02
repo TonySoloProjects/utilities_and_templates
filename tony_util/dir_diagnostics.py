@@ -5,7 +5,8 @@ Created on: 2021-02-10
 Copyright © 2021 Tony Held.  All rights reserved.
 """
 
-def values(var, mode='plain-text', exclude_starting_with='_'):
+
+def values(var, mode='plain-text', exclude_starting_with='_', print_=True):
     """Show a variable's attributes and values for diagnostic debugging purposes.
 
     Parameters
@@ -23,14 +24,24 @@ def values(var, mode='plain-text', exclude_starting_with='_'):
         ''   -  turns off filtering (zero length string)
         '_'  - excludes all attributes starting with a single underscore
         '__' - excludes all attributes starting with a double underscore
-    """
 
-    mytype = strip_single_tag(type(var))
+    print_ : bool
+        True to print, False to suppress output
+
+    Returns
+    -----------
+    text : str
+        plain text or html string with variable attribute information.
+
+    """
+    text = ""
+
+    mytype = type(var)
 
     if mode == 'plain-text':
-        print(f'Variable type: {mytype}')
+        text += f'Variable type: {mytype}\n'
     else:
-        print(f'Variable type: {mytype}<br>')
+        text += f'Variable type: {strip_single_tag(mytype)}<br>'
 
     if exclude_starting_with:
         attrs = [i for i in dir(var) if not i.startswith(exclude_starting_with)]
@@ -39,12 +50,14 @@ def values(var, mode='plain-text', exclude_starting_with='_'):
 
     for i in attrs:
         if mode == 'plain-text':
-            print(f'\n{i}:\n{"-" * 20}\n'
-                  f'{getattr(var, i)}')
+            text += f'\n{i}:\n{"-" * 20}\n{getattr(var, i)}\n'
         else:
-            print(f'<hr>{i}:<br>{"-" * 20}<br>'
-                  f'{strip_single_tag(getattr(var, i))}')
+            text += f'<hr>{i}:<br>{"-" * 20}<br>{strip_single_tag(getattr(var, i))}'
 
+    if print_ is True:
+        print(text)
+
+    return text
 
 def strip_single_tag(text):
     """Remove starting '<' and ending '>' from a string
@@ -75,3 +88,19 @@ def strip_single_tag(text):
             text = text_inner
 
     return text
+
+
+if __name__ == '__main__':
+
+    class MyClass:
+        def __init__(self):
+            self.name = 'example class'
+            self.data = {1: "is the loneliest number", 2: "can be as bad as one"}
+
+    mc1 = MyClass()
+    vals1 = values(mc1, print_=True)
+    print(vals1)
+
+    mc2 = MyClass()
+    vals2 = values(mc2, print_=False, mode='html')
+    print(vals2)
