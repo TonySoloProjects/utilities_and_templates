@@ -1,7 +1,7 @@
 ## Project Name & Summary
-*The UCD2001 Roadway Dispersion Model.*  
+*Your Model Name Here!*  
 
-An air quality model to simulate the distribution of pollutants near roadways.
+A super cool model to simulate something you are very interested in.
 
 ## Table of contents
 * [Project Description](#project-description)
@@ -54,7 +54,7 @@ Distributed under the *** License. See `*** License Info ***` for more informati
 
 ## Contact
 
-Tony Held - tony.held@gmail.com
+Tony Held - tony.held@gmail.com  
 Project Link: [https://github.com/github_username/repo_name](https://github.com/github_username/repo_name)
 
 ## Resources & Acknowledgements

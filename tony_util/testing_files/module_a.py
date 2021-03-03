@@ -1,5 +1,5 @@
 # module used to test import statements
-from log_util import SingletonLogger
+from tony_util.log_util import SingletonLogger
 
 
 log = SingletonLogger.get_logger('module_a')

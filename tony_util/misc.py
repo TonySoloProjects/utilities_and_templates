@@ -1,28 +1,16 @@
-"""Collection of utilities to assist in learning new coding techniques.
-Created by: Tony Held tony.held@gmail.com
-Created on: 8/13/20
 """
+Collection of utilities to assist in learning how to use
+introspection of the python stack and other coding techniques.
+
+Created by: Tony Held tony.held@gmail.com
+Created on: 2020-08-13
+Copyright © 2020 Tony Held.  All rights reserved.
+"""
+
 import traceback
 import os
 import sys
 
-def display_python_version():
-    """Display python version and related info."""
-    print(f"Python version: {sys.version}")
-    print(f"Version info: {sys.version_info}")
-
-
-def print_header(str, char='*'):
-    """Print a header to help separate print output.
-
-    Parameters
-    ----------
-    str:
-        Text to print in header.
-    char:
-        The character repeated on next line for pizzaz
-    """
-    print(f"{str}\n{char*len(str)}\n")
 
 def stack_info(stack_print=True, short_filename=True):
     """Inspect the call stack to learn how a methods are invoked.
@@ -80,6 +68,7 @@ def stack_info(stack_print=True, short_filename=True):
             print(my_string)
 
     return filenames, linenums, function_names, statements
+
 
 def my_calling_statement(stack_index=-3):
     """Inspect the call stack to see what statement was issued
@@ -148,6 +137,7 @@ def get_max_char(x, max_char=500):
 def func1(arg1='mytext1'):
     func2('Simple String Argument')
 
+
 def func2(arg2='mytext1'):
     x = stack_info()
     print(x)
@@ -156,9 +146,10 @@ def func2(arg2='mytext1'):
     z = function_arguments(y)
     print(z)
 
+
 def print_all(*args, output_mode='!s'):
     """Diagnostic to output a list of variables and their values each on their own line.
-     This helps to make debuging print statements faster to type.
+     This helps to make debugging print statements faster to type.
 
     Parameters
     ----------
@@ -182,12 +173,68 @@ def print_all(*args, output_mode='!s'):
 
 # Based on: https://stackoverflow.com/questions/4664850/how-to-find-all-occurrences-of-a-substring
 
+
 def findall(p, s):
     """Yields all the positions of the pattern p in the string s."""
     i = s.find(p)
     while i != -1:
         yield i
         i = s.find(p, i+1)
+
+
+def update_pip():
+    """
+    Routine to update or share your pip installation configurations.
+
+    Created by: Tony Held tony.held@gmail.com
+    Created on: 2021/03/XX
+    Copyright © 2021 Tony Held.  All rights reserved.
+
+    Notes
+    --------
+    1) Now that I use anaconda, so I don't often have to pip install packages.
+    2) Approach inspired by:
+            https://stackoverflow.com/questions/2720014/how-to-upgrade-all-python-packages-with-pip/33667992#33667992
+    """
+    fn_before_update = 'testing_files/pip_versions_before.txt'
+    fn_requirements = 'testing_files/pip_requirements.txt'
+
+    os.system(f'pip freeze > {fn_before_update}')
+    # This will create a file with the head of
+    # altgraph==0.17
+    # argon2-cffi==20.1.0
+    # ...
+
+    # parse the output file and find all version names
+    with open(fn_before_update, "r") as f_in, open(fn_requirements, "w") as f_out:
+        for line in f_in:
+            line_out = line.replace("==", ">=")
+            f_out.write(line_out)
+    exit()
+
+    # I actually ran this from the command line to see the output rather than the line below
+    # pip install -r requirements_file_name.txt --upgrade
+    os.system(f'pip install -r {fn_requirements} --upgrade')
+
+
+def display_python_version():
+    """Display python version and related info."""
+    print(f"Python version: {sys.version}")
+    print(f"Version info: {sys.version_info}")
+
+
+def print_header(str, char='*'):
+    """Print a header to help separate print output.
+
+    Parameters
+    ----------
+    str:
+        Text to print in header.
+    char:
+        The character repeated on next line for pizzaz
+    """
+    print(f"{str}\n{char*len(str)}\n")
+
 
 if __name__ == '__main__':
     """Diagnostic of utilities in this module"""
@@ -203,4 +250,7 @@ if __name__ == '__main__':
     print_all(a, b, c)
 
     print_all(c, b, a, output_mode='!r')
+
+    update_pip()
+
 

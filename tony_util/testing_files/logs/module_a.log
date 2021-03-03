@@ -1,0 +1,6 @@
+Logger created at: 2021-03-02 18:40:56.987612
+Module: module_a: Called with debug 10
+Module: module_a: Called with info 20
+Module: module_a: Called with warning 30
+Module: module_a: Called with error 40
+Module: module_a: Called with critical 50

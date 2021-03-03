@@ -1,5 +1,6 @@
 """
 Routines and classes to assist in inspecting/debugging variables.
+
 Created by: Tony Held tony.held@gmail.com
 Created on: 2021-02-10
 Copyright © 2021 Tony Held.  All rights reserved.
@@ -63,7 +64,7 @@ def strip_single_tag(text):
     """Remove starting '<' and ending '>' from a string
     that is appears to be a single html tag.
 
-    This will avoid confusing text of the form <text> with html.
+    This will avoid confusing text of the form <text> when dynamically serving html.
 
     Parameters
     ------------

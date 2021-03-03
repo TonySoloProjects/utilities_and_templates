@@ -3,6 +3,6 @@
 import module_a
 import module_b
 
-from log_util import SingletonLogger
+from tony_util.log_util import SingletonLogger
 
 print(SingletonLogger.loggers)

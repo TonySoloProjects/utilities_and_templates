@@ -1,6 +1,9 @@
-"""Exploring how to time/profile operations.
+"""
+Simple testing of computational advantages of numpy over standard python looping.
+
 Created by: Tony Held tony.held@gmail.com
-Created on: 10/8/20
+Created on: 2020-10-08
+Copyright © 2020 Tony Held.  All rights reserved.
 """
 
 import time

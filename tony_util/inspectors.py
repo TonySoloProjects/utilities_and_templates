@@ -1,10 +1,11 @@
-"""Classes to perform introspection on objects.
-Created by: Tony Held tony.held@gmail.com
-Created on: 8/13/20 """
+"""
+Classes to explore magic methods, object inheritance, and namespaces.
 
+Created by: Tony Held tony.held@gmail.com
+Created on: 2020-08-13
+Copyright © 2021 Tony Held.  All rights reserved.
+"""
 from tony_util.misc import my_calling_statement, function_arguments, get_max_char
-from tony_util.classes_examples import *
-import pprint
 
 
 class Inspector:
@@ -173,6 +174,27 @@ class Inspector:
         self.climb_bases(J())
 
 
+"""Simple classes to test introspection functions"""
+class A: pass
+class B(A): pass
+class C(B): pass
+class D: pass
+class E(D): pass
+class F(E): pass
+class G(C, F): pass
+class H: pass
+class J(G, H, D): pass
+
+class Super:
+    class_level_variable = "Testing namespace availability"
+    def hello(self):
+        self.data = 'More'
+
+class Sub(Super):
+    def hola(self):
+        self.data2 = 'Cowbell'
+
+
 if __name__ == "__main__":
 
     inspector = Inspector()
@@ -189,4 +211,3 @@ if __name__ == "__main__":
         # pp.pprint(a)
         pp.pprint(b)
         pp.pprint(J.__mro__)
-
